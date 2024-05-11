@@ -1,0 +1,1159 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Welcome to iCoder. A blog for coding enthusiasts">
+    
+    <!--Chatbot CSS-->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700,300">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.1.2/css/material-design-iconic-font.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400&family=Finger+Paint&display=swap">
+    <style>
+        html {
+          --scrollbarBG: #fff;
+          --thumbBG: rgb(63, 63, 70);
+        }
+        
+        #my-chat-bot{
+          display: none;
+          position: fixed;
+          bottom: 3rem;
+          right: 0.5rem;
+          z-index: 1;
+        }
+      
+        #openboticon{
+          border-radius: 10px;
+          position:fixed;
+          bottom: 2rem;
+          right: 2rem;
+          z-index: 2;
+          background: #5E5DF0;
+          border-radius: 999px;
+          box-shadow: #5E5DF0 0 10px 20px -10px;
+          box-sizing: border-box;
+          color: #FFFFFF;
+          cursor: pointer;
+          font-family: Inter,Helvetica,"Apple Color Emoji","Segoe UI Emoji",NotoColorEmoji,"Noto Color Emoji","Segoe UI Symbol","Android Emoji",EmojiSymbols,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans",sans-serif;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 24px;
+          opacity: 1;
+          outline: 0 solid transparent;
+          padding: 8px 18px;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: manipulation;
+          width: fit-content;
+          word-break: break-word;
+          border: 0;
+        }
+      
+        .botbody {
+          display: flex;
+          justify-content: end;
+          align-items: center;
+          margin:2rem;
+      }
+      
+      .botcontent{
+          border-radius: 1rem !important;
+          min-width: 25rem;
+          border: 2px solid white;
+      }
+      
+      .card {
+          border-radius: 1rem !important;
+          height: 30rem;
+          background-color: black !important; 
+      }
+      
+      .card #botheader {
+          border-radius: 1rem !important;
+          border: 2px solid whitesmoke;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background: #000;
+          padding: 0.5rem;
+        }
+        
+        .card #botheader h1 {
+          color: #fff;
+          font-size: 1.5rem;
+          font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+          padding: 1.2rem;
+        }
+        
+        .card #message-section::-webkit-scrollbar {
+          width: 10px;
+        }
+        
+        .card #message-section {
+          height: 30rem;
+          max-height: 450px;
+          overflow-y: auto;
+          scrollbar-color: black var(--thumbBG);
+          padding: 1rem;
+        }
+        
+        .card #message-section::-webkit-scrollbar {
+          width: 3px;
+        }
+        
+        .card #message-section::-webkit-scrollbar-thumb {
+          background-color: rgb(255, 255, 255);
+        }
+        
+        .card #message-section::-webkit-scrollbar-track {
+          background-color: rgb(0, 0, 0);
+        }
+        
+        .card #message-section #bot,
+        .card #message-section #user {
+          position: relative;
+          bottom: 0;
+          min-height: 1.2rem;
+          background-color: rgb(63, 63, 70);
+          color: #fff;
+          border-radius: 0 1rem 1rem 1.2rem;
+          margin: 0.8rem 0.4rem 0rem;
+          max-width: 34vw;
+        }
+        
+        .card #message-section #bot {
+          float: left;
+          padding-left: 1.2rem;
+        }
+        
+        .card #message-section #user {
+          border-radius: 1rem 0rem 1rem 1.2rem;
+          background-color: #fff;
+          float: right;
+          padding-right: 1.2rem;
+        }
+        
+        .card #message-section #user #user-response {
+          color: #000000;
+        }
+        
+        .card #message-section .message {
+          color: #000;
+          clear: both;
+          line-height: 1.4rem;
+          font-size: 1rem;
+          padding: 8px;
+          position: relative;
+          margin: 8px 0;
+          max-width: 85%;
+          word-wrap: break-word;
+          z-index: 2;
+        }
+        
+        .card #input-section {
+          z-index: 1;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          overflow: hidden;
+          padding: 0.5rem;
+          padding-bottom: 1rem;
+        }
+        
+        .card #input-section input {
+          display: flex;
+          align-items: center;
+          color: #000;
+          min-width: 0.5rem;
+          outline: none;
+          height: 2rem;
+          max-height: 2rem;
+          max-width: 600px;
+          flex: 1;
+          background-color: rgb(63, 63, 70);
+          border: none;
+          border-radius: 1rem;
+          color: white;
+          margin-left: 0.4rem;
+        }
+        
+        .card .send {
+          background: transparent;
+          border: 0;
+          cursor: pointer;
+          flex: 0 0 auto;
+          margin-left: 1em;
+          margin-right: 0;
+          padding: 0;
+          position: relative;
+          outline: none;
+        }
+        
+        .circle:hover,
+        .circle:active {
+          opacity: 0.7;
+        }
+        
+        .card .send .circle {
+          position: relative;
+          width: 2.8rem;
+          height: 2.8rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .card .send .circle i {
+          font-size: 1.5rem;
+          margin-left: -0.2rem;
+        }
+        
+        .circle {
+          background-color: rgb(57, 57, 150);
+          border-radius: 10px;
+          color: #fff;
+        }
+        
+        input:focus, .circle:focus, .send:focus , button:focus {
+          border: 1px solid white !important;
+          border-radius: 10px;
+          outline: none; 
+        }
+        
+        .quickbtns{
+          margin-left: 1.1rem;
+          margin-bottom: 1.1rem;
+        }
+        
+        .quickmessage {
+          background-color: rgb(57, 57, 150);
+          color: #ffffff;
+          font-size: 1rem;
+          border-radius: 20px;
+          border: none;
+          padding: 5px 10px;
+          cursor: pointer;
+          margin-bottom: 0px;
+          margin-top: 3px;
+        }
+        
+        .typing-animation {
+          animation: typing 2s infinite;
+        }
+        
+        @keyframes typing {
+          0% { opacity: 0.5; }
+          50% { opacity: 1; }
+          100% { opacity: 0.5; }
+        }
+        
+        @media (max-width: 767px) {
+          .card {
+            min-width: 80vw;
+            min-height: 60vh;
+            font-size: 1.2vw;
+          }
+        
+          .quickmessage{
+            font-size: 1rem;
+          }
+        
+          .card #botheader {
+            font-size: 1.8rem;
+          }
+        
+          .card #message-section {
+            height: 50vh;
+          }
+        
+          * {
+            font-size: 9px;
+          }
+        
+          #input-sectioninput {
+            padding: 0.5rem;
+            padding-left: 1.2rem;
+          }
+        
+          #bot-response,
+          #user-response,
+          #bot-input {
+            font-size: 11px;
+          }
+        
+          .card #message-section::-webkit-scrollbar {
+            width: 2px;
+          }
+        
+          .card #message-section #bot,
+          .card #message-section #user {
+            max-width: 60vw;
+          }
+          .quickbtns {
+            max-width: 75vw;
+          }
+        }
+        
+        @media (min-width: 768px) {
+          #botheader h1 {
+            font-size: 1rem;
+          }
+        
+          .quickbtns{
+            max-width: 600px;
+          }
+        
+          #bot-response,
+          #user-response,
+          #bot-input {
+            font-size: 16px;
+          }
+        
+          #input-section input {
+            padding: 0.2rem;
+            padding-left: 1.2rem;
+          }
+        
+          .card .send .circle {
+            width: 2.6rem;
+            height: 2.6rem;
+          }
+      
+        }</style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <style>
+        .footer {
+            width: 100%;
+            position: relative;
+            height: auto;
+            background-color: #070617;
+        }
+
+        .footer .col {
+            width: 190px;
+            height: auto;
+            float: left;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            padding: 0px 20px 20px 20px;
+        }
+
+        .footer .col h1 {
+            margin: 0;
+            padding: 0;
+            font-family: inherit;
+            font-size: 12px;
+            line-height: 17px;
+            padding: 20px 0px 5px 0px;
+            color: rgba(255, 255, 255, 0.2);
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.250em;
+        }
+
+        .footer .col ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .footer .col ul li {
+            color: #999999;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: bold;
+            padding: 5px 0px 5px 0px;
+            cursor: pointer;
+            transition: .2s;
+            -webkit-transition: .2s;
+            -moz-transition: .2s;
+        }
+
+        .social ul li {
+            display: inline-block;
+            padding-right: 5px !important;
+        }
+
+        .footer .col ul li:hover {
+            color: #ffffff;
+            transition: .1s;
+            -webkit-transition: .1s;
+            -moz-transition: .1s;
+        }
+
+        .clearfix {
+            clear: both;
+        }
+
+        @media only screen and (min-width: 1280px) {
+            .contain {
+                width: 1200px;
+                margin: 0 auto;
+            }
+        }
+
+        @media only screen and (max-width: 1139px) {
+            .contain .social {
+                width: 1000px;
+                display: block;
+            }
+
+            .social h1 {
+                margin: 0px;
+            }
+        }
+
+        @media only screen and (max-width: 950px) {
+            .footer .col {
+                width: 33%;
+            }
+
+            .footer .col h1 {
+                font-size: 14px;
+            }
+
+            .footer .col ul li {
+                font-size: 13px;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            .footer .col {
+                width: 50%;
+            }
+
+            .footer .col h1 {
+                font-size: 14px;
+            }
+
+            .footer .col ul li {
+                font-size: 13px;
+            }
+        }
+
+        @media only screen and (max-width: 340px) {
+            .footer .col {
+                width: 100%;
+            }
+        }
+    </style>
+    <title>EcoPick</title>
+</head>
+
+<body onkeypress="keyOpenBot()">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/">EcoPick</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="Index">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/upload">Upload</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/shop">Shop</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about">About Us</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Services
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Track</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="Analyze/graph">Analyze</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">FAQ</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contact Us</a>
+                </li>
+
+            </ul>
+            <div class="mx-2">
+                <a href={% url "login" %}>
+                    <button>Login</button>
+                </a>
+                <a href={% url "register" %}>
+                    <button>Register</button>
+                  </a
+            </div>
+        </div>
+    </nav>
+
+    <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/static/11.jpg" height="500" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Welcome to EcoPick</h2>
+                    <p>Turning Trash into Treasure: Together We Combat Plastic Pollution</p>
+                    <a href={% url "login" %} class='btn btn-primary'>Login / Register</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://source.unsplash.com/1400x400/?code,environment" height="500" class="d-block w-100"
+                    alt="nature">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Let's come together</h2>
+                    <p>To save our mother earth</p>
+                    <a href={% url "login" %} button class="btn btn-primary">Login / Register</button></a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://source.unsplash.com/1400x400/?code,nature" height="500" class="d-block w-100"
+                    alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2>Empower the Future, Conquer Plastic Waste Today!</h2>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                    <a href={% url "login" %} button class="btn btn-primary">Login / Register</button></a>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <div class="container my-4">
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div
+                    class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-primary">SELL</strong>
+                        <h3 class="mb-0">UPLOAD</h3>
+                        <!-- <div class="mb-1 text-muted">MAY 15</div> -->
+                        <p class="card-text mb-auto">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+                            impedit aliquam nobis, quae corrupti perspiciatis molestias nihil quis sed maxime a ab
+                            itaque voluptates. </p>
+                        <a href="#" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img class="bd-placeholder-img" width="200" height="250" src="/static/15.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div
+                    class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-success">BUY</strong>
+                        <h3 class="mb-0">BUY RECYCLE PRODUCTS</h3>
+                        <!-- <div class="mb-1 text-muted">MAY 15</div> -->
+                        <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to
+                            additional
+                            content.</p>
+                        <a href="#" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img class="bd-placeholder-img" width="200" height="250" src="/static/16.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div
+                    class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-danger">CHARITY</strong>
+                        <h3 class="mb-0">CHARITY</h3>
+                        <!-- <div class="mb-1 text-muted">MAY 15</div> -->
+                        <p class="card-text mb-auto">This is a wider card with supporting text below as a natural
+                            lead-in to
+                            additional content.</p>
+                        <a href="#" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img class="bd-placeholder-img" width="200" height="250" src="/static/17.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div
+                    class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                    <div class="col p-4 d-flex flex-column position-static">
+                        <strong class="d-inline-block mb-2 text-warning">Graph of Plastic Generation</strong>
+                        <h3 class="mb-0">Graph of Plastic Generation</h3>
+                        <!-- <div class="mb-1 text-muted">MAY 15</div> -->
+                        <p class="mb-auto">This is a wider card with supporting text below as a natural lead-in to
+                            additional
+                            content.</p>
+                        <a href="#" class="stretched-link">Continue reading</a>
+                    </div>
+                    <div class="col-auto d-none d-lg-block">
+                        <img class="bd-placeholder-img" width="200" height="250" src="/static/18.jpg" alt="">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <footer class="container">
+        <p class="float-right"><a href="#">Back to top</a></p>
+        <p>© 2024-2025 EcoPick, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
+    </footer> -->
+
+    <div id="my-chat-bot">
+        <div class="botbody">
+            <div class="botcontent">
+                <div class="card">
+                    <div id="botheader">
+                        <h1>EcoPick Bot</h1>
+                        <button class="send" onclick="reset()">
+                            <div class="circle refresh"><i class="zmdi zmdi-refresh-sync"
+                                style="font-size: 1.5rem; margin-left: 0.2rem;"></i></div>
+                            </button>
+                        </div>
+                        <hr>
+                        <div id="message-section">
+                            <div class="message" id="bot"><span id="bot-response">Hello.. I'm listening! Go on..</span></div>
+                        </div>
+                        <div class="quickbtns">
+
+                            <button tabindex="1" class="quickmessage" data-message="Report a Bug 🐞"
+                            onclick="send(this.getAttribute('data-message'))">Report a Bug 🐞</button>
+                        </div>
+                        <div id="input-section">
+                            <input id="user-input" type="text" placeholder="Type a message..." autocomplete="on"
+                            autofocus="autofocus" tabindex="3" />
+                    <button type="submit" class="send sendmessage" onclick="sendMessage()" tabindex="3">
+                        <div class="circle"><i class="zmdi zmdi-mail-send"
+                            style="font-size: 1.5rem; margin-left: 0.2rem;"></i></div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        
+        <button id="openboticon" onclick="openbot()">
+            EcoPick Bot
+        </button>
+
+        <footer>
+            <div class="footer">
+                <div class="contain">
+                    
+                        <li>Webmail</li>
+                        <li>Redeem code</li>
+                        <li>WHOIS lookup</li>
+                        <li>Site map</li>
+                        <li>Web templates</li>
+                        <li>Email templates</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h1>Support</h1>
+                    <ul>
+                        <li>Contact us</li>
+                        <li>Web chat</li>
+                        <li>Open ticket</li>
+                    </ul>
+                </div>
+                <div class="col social">
+                    <h1>Social</h1>
+                    <ul>
+                        <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/640px-LinkedIn_logo_initials.png" width="32" style="width: 32px;"></li>
+                        <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/2048px-Instagram_logo_2016.svg.png" width="32" style="width: 32px;"></li>
+                        <li><img src="https://store-images.s-microsoft.com/image/apps.45406.9007199266244427.4d45042b-d7a5-4a83-be66-97779553b24d.2a88a418-b96d-44a6-ad4f-5e0ee6289b2c" width="32" style="width: 32px;"></li>
+                    </ul>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script>
+        function reset() {
+            document.getElementById("message-section").innerHTML = '<div class="message" id="bot"><span id="bot-response">Hello.. I\'m listening! Go on..</span></div>';
+        }
+
+        function send(message) {
+            var userInput = document.getElementById("user-input");
+            userInput.value = message;
+            var sendButton = document.querySelector('.send[type="submit"]');
+            sendButton.click();
+        }
+
+        function keyOpenBot()
+        {
+
+            if(event.shiftKey==true && event.key=="E")
+            {
+                    var x=document.getElementById("my-chat-bot");
+                    if(x.style.display=="none")
+                    {
+                        x.style.display="block";
+                    }
+                    else{
+                        x.style.display="none";
+                    }
+            }
+
+            
+        }
+
+        function openbot()
+        {
+            var x=document.getElementById("my-chat-bot");
+            if(x.style.display=="none")
+            {
+                x.style.display="block";
+            }
+            else{
+                x.style.display="none";
+            }
+        }
+
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script >
+        const userMessage = [
+            /* 0 */["hi", "hey", "hello", "hlo", "hi there", "hey there"],
+            /* 1 */["how are you", "how r u", "hw r u", "how are you doing", "how's it going", "how's life"],
+            /* 2 */["what are you doing", "what is going on", "what is up", "wud", "what's up", "what's happening", "ok", "ok"],
+            /* 3 */["how old are you"],
+            /* 4 */["bye", "good bye", "take care"],
+            /* 5 */["who are you", "are you human", "human", "are you bot", "are you human or bot", "what are you", "tell me about yourself"],
+            /* 6 */["who created you", "creator", "who is your creator", "who made you"],
+            /* 7 */["email", "address", "mail"],
+            /* 8 */["developer number", "message", "You are bad", "contact developer", "report", "there is bug", "bug", "who's behind you", "contact", "phone", "contact", "info", "whatsapp", "wa", "number", "Who is amaan", "amaan", "amaan mk", "mk", "mohammed", "khalander"],
+            /* 9 */["instagram", "username", "link", "user", "insta"],
+            /* 10 */["github", "repository", "repo", "git"],
+            /* 11 */["your name please", "your name", "name", "may I know your name", "what is your name", "what do you call yourself", "tell me your name"],
+            /* 12 */["i love you", "love", "love you", "i like you", "you're awesome", "you're great", "you're cool"],
+            /* 13 */["happy", "good", "fun", "wonderful", "fantastic", "cool", "very good", "awesome", "nice", "excellent"],
+            /* 14 */["bad", "help", "bored", "tired", "not good", "feeling down", "feeling low", "i am sad", "sad"],
+            /* 15 */["What is your purpose?", "Why were you created?", "What can you do?", "Tell me about your capabilities", "club", "What's your main function?"],
+            /* 16 */["What's the weather like today?", "Tell me the weather forecast", "Weather today"],
+            /* 17 */["How does your language model work?", "created", "language", "Explain your AI technology", "Tell me about your architecture", "how you work", "send your code"],
+            /* 18 */["What's the time now?", "What's the current time?", "Tell me the time", "time"],
+              /* 19 */["events", "news", "plans", "esports", "game", "planned", "future"],
+                  /* 20 */["previous", "old", "school visit", "visit", "school"],
+                  /*21*/["How can I upload photos?","How to upload image?"]
+          ];
+          
+          const botReply = [
+            /* 0 */["Hello! 😊", "Hi! 👋", "Hey! 👍", "Hi there! 👋"],
+            /* 1 */["Fine... how are you? 😄", "Pretty well, how are you? 😊", "Fantastic, how are you? 🌟"],
+            /* 2 */["Getting better. There? 😄", "Somewhat okay! 😅", "Yeah fine!🏡"],
+            /* 3 */["I am always young. 👶"],
+            /* 4 */["Goodbye! 👋", "Farewell! 😊", "Please take care! 🌼"],
+            /* 5 */["I am just a bot 😄", "I am a bot. What are you? 🤖"],
+            /* 6 */["Amaan Mohammed Khalander is my creator 🙌"],
+            /* 7 */["You can contact Admin:<br> Email: <a href='mailto:syedkhalander66@gmail.com'>syedkhalander66@gmail.com 📧</a>"],
+            /* 8 */["You can contact Admin:<br> Phone: <a href='tel:8867305645'>8867305645</a> 📱<br> WhatsApp: <a href='https://wa.me/7353346164'>7353346164</a> 💬"],
+            /* 9 */["Instagram: <a href='https://www.instagram.com/amaan.m.k/'>@amaan.m.k 📷</a>"],
+            /* 10 */["GitHub: <a href='https://github.com/amaan9136'>@amaan9136 🐙</a>"],
+            /* 11 */["I am ClubGPT by Amaan Mohammed Khalander 😊"],
+            /* 12 */["I love you too ❤️", "Me too! 😄", "Thanks! Try giving feedback on WhatsApp: <a href='https://wa.me/7353346164'>7353346164</a> 💬"],
+            /* 13 */[
+              "I'm glad to hear that you're feeling happy! 😄", "That's great! 😊", "Thanks! Try giving feedback on WhatsApp: <a href='https://wa.me/7353346164'>7353346164</a> 💬", "Fun is always good! 🎉", "Wonderful! 😄", "Fantastic! 😃", "Cool! 😎", "😊", "Awesome! 🌟", "Excellent! 👏"
+            ],
+            /* 14 */[
+              "I'm really sorry to hear that you're feeling this way. It's important to talk to someone you trust about your feelings. ❤️",
+              "You don't have to go through this alone. Reach out to friends, family, or a mental health professional for support. 🤗",
+              "I'm here to listen and chat with you, but I'm not a replacement for professional help. Please consider seeking help from a therapist or counselor. 🙏",
+              "Remember that it's okay to not be okay sometimes. Your feelings are valid, and there are people who care about you. 💕",
+              "If you'd like, we can chat about your feelings and experiences. Sharing can sometimes help lighten the burden. 📢",
+              "Depression can be a tough journey, but there is hope and help available. You're not alone in this. 🌟",
+              "Is there anything specific you'd like to talk about or any questions you have? 😊",
+              "I'm here to provide a listening ear. Feel free to share as much or as little as you're comfortable with. 🤗"
+            ],
+            /* 15 */["My purpose is to manage the club and assist you with events and info. 🎉"],
+            /* 16 */["I'm sorry, I cannot provide real-time weather information. You can check a weather website or app for the latest updates. ☀️"],
+            /* 17 */["That's a secret only Amaan knows! 🤫"],
+            /* 18 */["I don't have access to real-time data, including the current time. You can check the time on your device or ask a voice assistant like Siri or Google Assistant. ⌚"],
+           /* 19 */[
+              "As much as I know, we are conducting Esports from the Technical Club. 🎮",
+              "Esports is one of the exciting initiatives of the Technical Club, and we have some amazing events lined up! 🎉",
+              "Esports is booming in the Technical Club! Stay tuned for upcoming events and news related to gaming. 🕹️",
+              "Esports is a key focus for us at the Technical Club. We have exciting plans and events in the world of gaming! 🚀"
+            ],
+          /* 20 */[
+              "Sure, I can tell you about the previous school visit. It was an event where all 4 clubs contributed their efforts. It was a fantastic experience for everyone involved! 🏫🤝",
+              "The previous school visit was a collaborative effort from all 4 clubs. It was a memorable event with lots of exciting activities and interactions. 📚🤝",
+              "Ah, the school visit! It was a great initiative where all 4 clubs joined forces to create a memorable experience. The teamwork and enthusiasm were truly commendable! 🌟🤝"
+            ],
+            /*21* */["You can upload photos directly through our website. Simply click on the 'Upload Photo' button and follow the instructions to submit your images ","You can upload  waste  image directly through our website. Simply click on the 'Upload Photo' button and follow the instructions to submit your images.","You can upload plastic waste directly through our website. Simply click on the 'Upload Photo' button and follow the instructions to submit your images."]
+          ];
+          
+          // Ensure the number of responses in botReply matches the number of message groups in userMessage
+          if (botReply.length !== userMessage.length) {
+            console.log("The number of message groups in botReply must match the number of message groups in userMessage.");
+            console.log(userMessage.length)
+            console.log(botReply.length);
+          }
+          
+          const alternative = [
+            "Can you ask something else. ❓",
+            "Hey, I'm listening... 👂",
+            "I didn't quite catch that. Could you please rephrase your question? 🤔",
+            "I'm not sure I understand. Can you provide more context or ask a different question? 🧐",
+            "Hmm, that's a bit confusing. Could you try asking in a different way? 🤨",
+            "Could you try asking in a different way? 🤨",
+            "I'm here to help, but I need a clearer question to provide a meaningful answer. 🤷‍♂️",
+            "It seems like we're on different wavelengths. Please try asking something else. 📡",
+            "I apologize, but I couldn't grasp the meaning of your input. Please rephrase your question. 🙁",
+            "You can contact Amaan:<br> Phone: <a href='tel:8867305645'>8867305645 📱</a><br> WhatsApp: <a href='https://wa.me/7353346164'>7353346164 💬"
+          ];
+          let lastUserDiv;
+          
+          function sendMessage() {
+            const inputField = document.getElementById("user-input");
+            const input = inputField.value.trim();
+            if (input) {
+              output(input);
+              inputField.value = "";
+            }
+          }
+          
+          //Calculation 
+          function findResponse(input) {
+          
+            //checks direct messages
+            let text = cleanInput(input);
+            for (const messageGroup of userMessage) {
+              const matchingMessage = messageGroup.find(message => text.includes(message.toLowerCase()));
+              if (matchingMessage) {
+                return getRandomResponseFromCategory(userMessage.indexOf(messageGroup));
+              }
+            }
+            const directMatch = findDirectMatch(text);
+            if (directMatch) {
+              return directMatch;
+            }
+          
+            //check similarity
+            const SIMILARITY_THRESHOLD = 0.6;
+            for (let i = 0; i < userMessage.length; i++) {
+              const messageGroup = userMessage[i];
+              for (const message of messageGroup) {
+                const similarityScore = calculateSimilarity(text, message);
+                if (similarityScore >= SIMILARITY_THRESHOLD) {
+                  return getRandomResponseFromCategory(i);
+                }
+              }
+            }
+          
+            //check each word
+            const words = text.split(' ');
+            for (const word of words) {
+              if (isCommonWord(word)) {
+                continue;
+              }
+              const categoryIndex = findCategoryIndex(word);
+              if (categoryIndex !== -1) {
+                return getRandomResponseFromCategory(categoryIndex);
+              }
+            }
+          
+            return getRandomAlternativeResponse();
+          }
+          
+          function calculateSimilarity(str1, str2) {
+            const len1 = str1.length;
+            const len2 = str2.length;
+            const short = len1 < len2 ? len1 : len2;
+            const long = len1 > len2 ? len1 : len2;
+            let matchCount = 0;
+          
+            for (let i = 0; i < short; i++) {
+              if (str1[i] === str2[i]) {
+                matchCount++;
+              }
+            }
+            const similarity = matchCount / long;
+            return similarity;
+          }
+          
+          function cleanInput(input) {
+            return input
+              .toLowerCase()
+              .replace(/[^\w\s'"]/gi, "")
+              .replace(/[\W_]/g, " ")
+              .replace(/ a /g, " ")
+              .replace(/i feel /g, "")
+              .replace(/whats/g, "what is")
+              .replace(/please /g, "")
+              .replace(/ please/g, "")
+              .trim();
+          }
+          
+          function findDirectMatch(text) {
+            for (const messageGroup of userMessage) {
+              const matchingMessage = messageGroup.find(message => text.includes(message.toLowerCase()));
+              if (matchingMessage) {
+                return getRandomResponseFromCategory(userMessage.indexOf(messageGroup));
+              }
+            }
+            return null;
+          }
+          
+          function isCommonWord(word) {
+            const commonWords = [
+              'why', 'who', 'how', 'what', 'please', 'a', 'an', 'the', 'is', 'are', 'am', 'I',
+              'you', 'he', 'she', 'we', 'they', 'it', 'and', 'but', 'or', 'not', 'in', 'on',
+              'your', 'my', 'their', 'his', 'her', 'its', 'our', 'with', 'without', 'at', 'by',
+            ];
+            return commonWords.includes(word.toLowerCase());
+          }
+          
+          function findCategoryIndex(word) {
+            return botReply.findIndex(category => category.includes(word));
+          }
+          
+          function getRandomResponseFromCategory(categoryIndex) {
+            const responses = botReply[categoryIndex];
+            return responses[Math.floor(Math.random() * responses.length)];
+          }
+          
+          function getRandomAlternativeResponse() {
+            return alternative[Math.floor(Math.random() * alternative.length)];
+          }
+          
+          document.addEventListener("DOMContentLoaded", () => {
+            const inputField = document.getElementById("user-input");
+            inputField.addEventListener("keydown", function (e) {
+              if (e.code === "Enter") {
+                const input = inputField.value.trim();
+                if (input) {
+                  output(input);
+                  inputField.value = "";
+                }
+              }
+            });
+          });
+          
+          const usnexp = /\b4AI\d{2}AI\d{3}\b/i;
+          
+          function output(input) {
+            if (input.toLowerCase().includes("university") || usnexp.test(input.toLowerCase()) || input.toLowerCase().includes("usn")) {
+              userMessageSend(input);
+              const match = usnexp.test(input);
+              if (match) {
+                const userUSN = input.match(usnexp)[0];
+                readStudentDatafromxl(userUSN);
+              } else {
+                sendBotMessage("Enter USN 📝");
+                // Call the userMessageWait function
+                userMessageWait().then((userResponse) => {
+                  userResponse = cleanInput(userResponse).replace(/\s/g, "");
+                  const match = usnexp.test(userResponse);
+                  if (match) {
+                    readStudentDatafromxl(userResponse);
+                  }
+                });
+              }
+            } else {
+              // If the input does not contain the USN pattern, proceed with generating a response
+              let product = findResponse(input);
+              addChat(input, product);
+            }
+          }
+          
+          function readStudentDatafromxl(userUSN) {
+            const fileName = "students.xlsx"; // Specify the name of the Excel file
+          
+            // Fetch the Excel file using the Fetch API
+            fetch(fileName)
+              .then((response) => response.arrayBuffer())
+              .then((data) => {
+                const workbook = XLSX.read(data, { type: "array" });
+          
+                // Assuming the sheet name is "student"
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+          
+                // Find the row with the matching USN (case-insensitive)
+                const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                const headerRow = rows[0];
+                let found = false;
+          
+                for (let i = 1; i < rows.length; i++) {
+                  const row = rows[i];
+                  const usnIndex = headerRow.indexOf("USN");
+                  const usnFromSheet = row[usnIndex].toLowerCase(); // Convert USN from the sheet to lowercase
+                  if (usnFromSheet === userUSN.toLowerCase()) { // Convert user input to lowercase for comparison
+                    // Assuming the columns are in this order: Name, USN, Email, Phone, Club, Year
+                    const nameIndex = headerRow.indexOf("Name");
+                    const emailIndex = headerRow.indexOf("Email");
+                    const phoneIndex = headerRow.indexOf("Phone");
+                    const clubIndex = headerRow.indexOf("Club");
+                    const yearIndex = headerRow.indexOf("Year");
+                    const name = row[nameIndex];
+                    const email = row[emailIndex];
+                    const phone = row[phoneIndex];
+                    const club = row[clubIndex];
+                    const year = row[yearIndex];
+                    const result = `Name: ${name}<br>USN: ${userUSN.toUpperCase()}<br>Email: ${email}<br>Phone: ${phone}<br>Club: ${club}<br>Year: ${year}`;
+                    // Call sendBotMessage with the result
+                    sendBotMessage(result, `Searching for USN ${userUSN.toUpperCase()} ...`);
+                    found = true;
+                    break;
+                  }
+                }
+                if (!found) {
+                  sendBotMessage("Student not found!");
+                }
+              })
+              .catch((error) => {
+                console.error("Error loading the Excel file:", error);
+              });
+          }
+          
+          const inputField = document.getElementById("user-input");
+          const quickMessageButtons = document.querySelectorAll(".quickmessage");
+          const mainDiv = document.getElementById("message-section");
+          const botDiv = document.createElement("div");
+          
+          function sendBotMessage(message, typingText = "Typing...") {
+            botDiv.id = "bot";
+            botDiv.classList.add("message");
+            botDiv.innerHTML = `<span id="bot-response" class="typing-animation">${typingText}</span>`;
+            mainDiv.appendChild(botDiv);
+            var scroll = document.getElementById("message-section");
+            scroll.scrollTop = scroll.scrollHeight;
+            inputField.disabled = true;
+            quickMessageButtons.forEach(button => {
+              button.disabled = true;
+            });
+          
+            setTimeout(() => {
+              const botResponse = botDiv.querySelector("#bot-response");
+              botResponse.classList.remove("typing-animation");
+              botDiv.innerHTML = `<span id="bot-response">${message}</span>`;
+              scroll.scrollTop = scroll.scrollHeight;
+              inputField.disabled = false;
+              quickMessageButtons.forEach(button => {
+                button.disabled = false;
+              });
+          
+              inputField.focus();
+            }, 2000);
+          }
+          
+          function userMessageSend(input) {
+            // Create a new user message div
+            const newUserDiv = document.createElement("div");
+            newUserDiv.id = "user";
+            newUserDiv.classList.add("message", "typing-animation");
+            newUserDiv.style.animationDuration = "1s";
+            newUserDiv.innerHTML = `<span id="user-response">${input}</span>`;
+            mainDiv.appendChild(newUserDiv);
+          
+            var scroll = document.getElementById("message-section");
+            scroll.scrollTop = scroll.scrollHeight;
+          
+            // Remove "typing-animation" class after 500ms
+            setTimeout(() => {
+              newUserDiv.classList.remove("typing-animation");
+            }, 500);
+          }
+          
+          function userMessageWait() {
+            return new Promise((resolve) => {
+              const inputField = document.getElementById("user-input");
+              let userResponse = "";
+          
+              function handleUserResponse(e) {
+                if (e.code === "Enter" || e.target.classList.contains("sendmessage")) {
+                  const trimmedResponse = userResponse.trim();
+                  resolve(trimmedResponse);
+                } else {
+                  userResponse = inputField.value;
+                }
+              }
+          
+              function handleInputBlur() {
+                resolve(userResponse.trim());
+              }
+          
+              inputField.addEventListener("keydown", handleUserResponse);
+              inputField.addEventListener("input", handleUserResponse);
+              inputField.addEventListener("blur", handleInputBlur);
+            });
+          }
+          
+          
+          function addChat(input, product) {
+            // Create a new user message div
+            const newUserDiv = document.createElement("div");
+            newUserDiv.id = "user";
+            newUserDiv.classList.add("message", "typing-animation");
+            newUserDiv.style.animationDuration = "0.5s";
+            newUserDiv.innerHTML = `<span id="user-response">${input}</span>`;
+            mainDiv.appendChild(newUserDiv);
+          
+            const botDiv = document.createElement("div");
+            botDiv.id = "bot";
+            botDiv.classList.add("message", "typing-animation");
+            botDiv.style.animationDuration = "2s";
+            botDiv.innerHTML = `<span id="bot-response">Typing...</span>`;
+            mainDiv.appendChild(botDiv);
+          
+            var scroll = document.getElementById("message-section");
+            scroll.scrollTop = scroll.scrollHeight;
+            inputField.disabled = true;
+            quickMessageButtons.forEach(button => {
+              button.disabled = true;
+            });
+          
+            newUserDiv.classList.remove("typing-animation");
+            setTimeout(() => {
+              botDiv.classList.remove("typing-animation");
+              botDiv.innerHTML = `<span id="bot-response">${product}</span>`;
+              scroll.scrollTop = scroll.scrollHeight;
+              inputField.disabled = false;
+              quickMessageButtons.forEach(button => {
+                button.disabled = false;
+              });
+              inputField.focus();
+            }, 2000);
+          }</script>
+</body>
+</html>
